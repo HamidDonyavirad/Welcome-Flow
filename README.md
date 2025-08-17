@@ -28,7 +28,7 @@ git clone <repository_url>
 cd welcome-flow
 ```
 
-### Install dependencies
+2. Install dependencies
 ```bash
 python -m venv venv
 source venv/bin/activate   # Linux/Mac
@@ -36,21 +36,21 @@ venv\Scripts\activate      # Windows
 pip install -r requirements.txt
 ```
 
-### Set up .env file
+3. Set up .env file
 ```bash
 DJANGO_SECRET_KEY=your_secret_key
 DEBUG=1
 DJANGO_ALLOWED_HOSTS=127.0.0.1,localhost
 ```
 
-### Running Celery
+4. Running Celery
 ```bash
 celery -A config worker -l info
 ```
 
-### API Endpoints
+5. API Endpoints
 
-## User Registration
+ User Registration
 - URL: /api/register/
 Method: POST
 Body:
