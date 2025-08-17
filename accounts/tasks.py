@@ -22,11 +22,11 @@ def send_email_html (subject,template_name,context,to_email,user_id,email_type):
 
 
 @shared_task
-def send_welcom_email(user_id):
-    user = User.objects.create(id=user_id)
+def send_welcome_email(user_id):
+    user = User.objects.get(id=user_id)
     send_email_html(
         subject='Welcome',
-        template_name='emails/welcome_email.html',
+        template_name='welcome_email.html',
         context={'username': user.username},
         to_email=user.email,
         user_id=user.id,
@@ -40,7 +40,7 @@ def send_profile_completion_email(user_id):
     user = User.objects.get(id=user_id)
     send_email_html(
         subject='Complete the profile',
-        template_name='emails/profile_completion_email.html',
+        template_name='profile_completion_email.html',
         context={'username': user.username},
         to_email=user.email,
         user_id=user.id,
@@ -53,16 +53,17 @@ def send_reminder_email(user_id):
     user = User.objects.get(id=user_id)
     send_email_html(
         subject='Login reminder',
-        template_name='emails/reminder_email.html',
+        template_name='reminder_email.html',
         context={'username': user.username},
         to_email=user.email,
         user_id=user.id,
         email_type='reminder'
     )             
-    
+
+@shared_task    
 def schedule_welcome_emails(user_id):
     chain(
-        send_email_html.s(user_id).set(countdown=5),
+        send_welcome_email.s(user_id).set(countdown=5),
         send_profile_completion_email.s().set(countdown=10),
         send_reminder_email.s().set(countdown=15)
     )()    
